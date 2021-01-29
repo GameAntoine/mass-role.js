@@ -3,5 +3,6 @@
     "token": "token",
     "version": "Votre Version",
     "créateur": "Strauven Antoine",
-    "couleur": "#e67265",
+    "salonLogsID" : "id su salon log",
+    "couleur": "#e67265"
 }
