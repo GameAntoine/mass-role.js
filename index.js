@@ -9,34 +9,32 @@ client.login(token);
 
 client.commands = new Discord.Collection();
 
-fs.readdir("./Commandes/", (error, f) =>{
+fs.readdir("./Commande/", (error, f) =>{
     if(error) console.log(error);
     console.log(error);
-    console.log(`${f.length} commandes en chargement`);
+    console.log(`${f.length} commande en chargement`);
 
     let commandes = f.filter(f => f.split(".").pop() ==="js");
     if(commandes.length <= 0) return console.log('aucune commande trouvée !');
 
     commandes.forEach((f) => {
-        let commande = require(`./Commandes/${f}`);
+        let commande = require(`./Commande/${f}`);
         console.log(`${f} commande chargée !`);
 
         client.commands.set(commande.help.name, commande)
     });
 });
 
-fs.readdir("./Events/", (error, f) => {
+fs.readdir("./events/", (error, f) => {
     if(error) console.log(error);
     console.log(error);
     console.log(`${f.length} events en chargement`);
 
     f.forEach((f) => {
-        const events = require(`./Events/${f}`);
+        const events = require(`./events/${f}`);
         const event = f.split(".")[0];
 
         client.on(event, events.bind(null, client));
         console.log(`${f} event chargée !`);
     });
-});
-
 });
