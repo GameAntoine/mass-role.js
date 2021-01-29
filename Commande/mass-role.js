@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const config = require('../../config.json')
+const config = require('../config.json')
 
 exports.run = (client, message, args) => {
   // On pré-définis l'embed pour ré-utiliser la const et donc économiser des ressources
@@ -40,16 +40,16 @@ exports.run = (client, message, args) => {
         message.guild.roles.fetch(givenRoleId)
           .then(givenRole => {
             // Confirmation par emoji
-            embed.setTitle("<:3235_warning2:770572014917910559>  Confirmation.")
+            embed.setTitle("🛑  Confirmation.")
               .setDescription(`Êtes-vous sûr de vouloir donner le rôle \`${givenRole.name}\` à chaque personne ayant le rôle \`${recieveRole.name}\` ?`);
 
             message.channel.send(embed).then(m => {
-              m.react("<a:6093_Animated_Checkmark:770572024640045076>");
-              m.react("<a:1603_Animated_Cross:770572023973543936>");
+              m.react("✅");
+              m.react("🛑");
 
               // Filtre pour spécifier l'emoji et l'utilisateur pouvant réagir
               const filter = (reaction, user) => {
-                return reaction.emoji.name === '6093_Animated_Checkmark' && user.id === message.author.id || reaction.emoji.name === '1603_Animated_Cross' && user.id === message.author.id;
+                return reaction.emoji.name === '🛑' && user.id === message.author.id || reaction.emoji.name === '✅' && user.id === message.author.id;
               };
 
               const collector = m.createReactionCollector(filter, {
@@ -57,17 +57,17 @@ exports.run = (client, message, args) => {
               });
               // Lorsqu'une 'bonne' réaction est donnée
               collector.on('collect', reaction => {
-                if (reaction.emoji.name == "6093_Animated_Checkmark") {
+                if (reaction.emoji.name == "✅") {
                   recieveRole.members.forEach(member => {
                     member.roles.add(givenRole);
                   });
 
-                  embed.setTitle("<a:6093_Animated_Checkmark:770572024640045076>  Succès !")
+                  embed.setTitle("✅  Succès !")
                     .setDescription(`Le rôle a bien été donné à \`${recieveRole.members.size}\` membres.`);
 
                   return message.channel.send(embed);
                 } else {
-                  embed.setTitle("<a:6093_Animated_Checkmark:770572024640045076>  Annulé !")
+                  embed.setTitle("🛑 Annulé !")
                     .setDescription("La commande a bien été annulée !");
 
                   return message.channel.send(embed);
@@ -77,7 +77,7 @@ exports.run = (client, message, args) => {
           })
           // Si le second rôle est invalide
           .catch(error => {
-            embed.setTitle("<:9830_no:770572016709140481>  Erreur d'argument !")
+            embed.setTitle("🛑 Erreur d'argument !")
               .setDescription("L'id du **second** rôle spécifié est incorrecte, veuillez réessayer.");
 
             message.channel.send(embed);
@@ -85,17 +85,18 @@ exports.run = (client, message, args) => {
       })
       // Si le premier rôle est invalide
       .catch(error => {
-        embed.setTitle("<:9830_no:770572016709140481>  Erreur d'argument !")
+        embed.setTitle("🛑  Erreur d'argument !")
           .setDescription("L'id du **premier** rôle spécifié est incorrecte, veuillez réessayer.");
 
         message.channel.send(embed);
       });
   }
+  
   // Si on donne un seul rôle à tout le monde
   else if (args[0]) {
     // Procédé semblable
     if(!/\d/.test(args[0])) {
-      embed.setTitle("<:9830_no:770572016709140481>  Erreur d'argument !")
+      embed.setTitle("🛑   Erreur d'argument !")
         .setDescription("Le rôle spécifié est incorrecte, veuillez réessayer.");
 
       return message.channel.send(embed);
@@ -104,15 +105,15 @@ exports.run = (client, message, args) => {
 
     message.guild.roles.fetch(givenRoleId)
       .then(givenRole => {
-        embed.setTitle("<:3235_warning2:770572014917910559>  Confirmation.")
+        embed.setTitle("✅  Confirmation.")
           .setDescription(`Êtes-vous sûr de vouloir donner le rôle \`${givenRole.name}\` à tout le monde ?`);
 
         message.channel.send(embed).then(m => {
-          m.react("<a:6093_Animated_Checkmark:770572024640045076>");
-          m.react("<a:1603_Animated_Cross:770572023973543936>");
+          m.react("✅");
+          m.react("🛑");
 
           const filter = (reaction, user) => {
-            return reaction.emoji.name === '6093_Animated_Checkmark' && user.id === message.author.id || reaction.emoji.name === '1603_Animated_Cross' && user.id === message.author.id;
+            return reaction.emoji.name === '🛑' && user.id === message.author.id || reaction.emoji.name === '✅' && user.id === message.author.id;
           };
 
           const collector = m.createReactionCollector(filter, {
@@ -120,7 +121,7 @@ exports.run = (client, message, args) => {
           });
 
           collector.on('collect', reaction => {
-            if (reaction.emoji.name == "6093_Animated_Checkmark") {
+            if (reaction.emoji.name == "✅") {
               message.guild.members.fetch()
               .then(members => {
                 members.forEach(member => {
@@ -129,12 +130,12 @@ exports.run = (client, message, args) => {
               })
               .catch(console.error);
 
-              embed.setTitle("<a:6093_Animated_Checkmark:770572024640045076>  Succès !")
+              embed.setTitle("✅ Succès !")
                 .setDescription(`Le rôle a bien été donné à \`${message.guild.memberCount}\` membres.`);
 
               return message.channel.send(embed);
             } else {
-              embed.setTitle("<a:6093_Animated_Checkmark:770572024640045076>  Annulé !")
+              embed.setTitle("🛑 Annulé !")
                 .setDescription("La commande a bien été annulée !");
 
               return message.channel.send(embed);
@@ -143,7 +144,7 @@ exports.run = (client, message, args) => {
         });
       })
       .catch(error => {
-        embed.setTitle("<:9830_no:770572016709140481>  Erreur d'argument !")
+        embed.setTitle("🛑  Erreur d'argument !")
           .setDescription("L'id du rôle spécifié est incorrecte, veuillez réessayer.");
 
         message.channel.send(embed);
@@ -151,7 +152,7 @@ exports.run = (client, message, args) => {
   }
   // Si aucun argument n'est précisé
   else {
-    embed.setTitle("<:9830_no:770572016709140481>  Erreur d'argument !")
+    embed.setTitle("🛑  Erreur d'argument !")
       .setDescription("Veuillez spécifier un rôle (mention ou id).");
 
     message.channel.send(embed);
